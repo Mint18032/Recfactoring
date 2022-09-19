@@ -24,7 +24,7 @@ public class Invoice {
         this.performances = performances;
     }
 
-    public static String statement(Invoice invoice, HashMap<String, Play> plays) throws Exception {
+    public static String getCustomerInfo(Invoice invoice, HashMap<String, Play> plays) throws Exception {
         int totalAmount = 0;
         int volumeCredits = 0;
         String result = "Statement for " + invoice.customer + "\n";
@@ -34,7 +34,7 @@ public class Invoice {
             volumeCredits += Math.max(perf.getAudience() - 30, 0);
             // add extra credit for every ten comedy attendees
             if ("comedy" == play.getType()) {
-                volumeCredits += Math.floor(perf.getAudience() / 5);
+                volumeCredits += Math.floor(perf.getAudience() * 1.0 / 5);
             }
             // print line for this order
             result += play.getName() + " " + perf.getAudience() + " seats\n";

@@ -6,13 +6,14 @@
 2. Quách Ngọc Minh 20020261
 ---
 
-Để thực hành tái cấu trúc mã nguồn, nhóm bọn em sử dụng 5 kỹ thuật tái cấu trúc khác nhau,
+Để thực hành tái cấu trúc mã nguồn, nhóm bọn em sử dụng 6 kỹ thuật tái cấu trúc khác nhau,
 bao gồm:
 - [Move method](#move-method)
 - [Self encapsulate field](#encapsulate)
 - [Extract method](#extract-method)
 - [Replace Magic Number with Symbolic Constant](#replace-magic-number)
 - [Consolidate Conditional Expression](#consolidate-conditional-expression)
+- [Rename Method](#rename-method)
 
 ## Move method - Moving Features between Objects <a name="move-method"></a>
 Phương thức `statement()` vốn là phương thức của `Invoice class` để tính toán và in ra báo cáo cho từng hoá đơn.
@@ -119,7 +120,7 @@ public class Play {
    volumeCredits += Math.max(perf.audience - 30, 0);
    // add extra credit for every ten comedy attendees
    if ("comedy" == play.type) {
-    volumeCredits += Math.floor(perf.audience / 5);
+    volumeCredits += Math.floor(perf.audience * 1.0 / 5);
    }
    // print line for this order
    result += play.name + " " + perf.audience + " seats\n";
@@ -196,7 +197,7 @@ public class Invoice {
             volumeCredits += Math.max(perf.audience - 30, 0);
             // add extra credit for every ten comedy attendees
             if ("comedy" == play.type) {
-                volumeCredits += Math.floor(perf.audience / 5);
+                volumeCredits += Math.floor(perf.audience * 1.0 / 5);
             }
             // print line for this order
             result += play.name + " " + perf.audience + " seats\n";
@@ -243,6 +244,7 @@ public class Play {
  }
 }
 ```
+
 ## Self encapsulate field - Organizing Data <a name="encapsulate"></a>
 Các thuộc tính của các class đều đang để `public` và truy cập trực tiếp vào, tái cấu
 trúc bằng cách chuyển về `private` và tạo các hàm `getter`, `setter`.
@@ -363,7 +365,7 @@ public static String statement(Invoice invoice, HashMap<String, Play> plays) thr
             volumeCredits += Math.max(perf.getAudience() - 30, 0);
             // add extra credit for every ten comedy attendees
             if ("comedy" == play.getType()) {
-                volumeCredits += Math.floor(perf.getAudience() / 5);
+                volumeCredits += Math.floor(perf.getAudience() * 1.0 / 5);
             }
             // print line for this order
             result += play.getName() + " " + perf.getAudience() + " seats\n";
@@ -435,7 +437,7 @@ public int getBaseAmount() {
 ```
 
 
-## Consolidate Conditional Expression <a name="#consolidate-conditional-expression"></a>
+## Consolidate Conditional Expression
 Để dễ hiểu và có thể sử dụng lại trong phương thức nào đó được phát triển sau, trong phương thức `countAmount()`,
 ta chuyển mệnh đề trong hàm if thành một phương thức riêng với mục đích xác minh kiểu `type` thuộc `Play class`.
 - Phương thức trước khi chuyển đổi:
@@ -465,6 +467,7 @@ public class Performance {
    throw new Exception("unknown type " + play.getType());
   }
   ...
+ }
 }
 ```
 
@@ -475,4 +478,33 @@ public class Play {
   return this.type.equals("tragedy") || this.type.equals("comedy");
  }  
 }
+```
+
+## Rename Method
+Tên phương thức `statement()` trong `Invoice class` chưa được rõ ràng, 
+chưa thể hiện được công dụng của phương thức. 
+Cần đổi tên phương thức này thành `getCustomerInfo()`.
+
+Giờ đây, người đọc sẽ dễ hiểu phương thức này hơn:
+```java
+    public static String getCustomerInfo(Invoice invoice, HashMap<String, Play> plays) throws Exception {
+        int totalAmount = 0;
+        int volumeCredits = 0;
+        String result = "Statement for " + invoice.customer + "\n";
+        for (Performance perf : invoice.performances) {
+            Play play = plays.get(perf.getPlayID());
+            // add volume credits
+            volumeCredits += Math.max(perf.getAudience() - 30, 0);
+            // add extra credit for every ten comedy attendees
+            if ("comedy" == play.getType()) {
+                volumeCredits += Math.floor(perf.getAudience() / 5);
+            }
+            // print line for this order
+            result += play.getName() + " " + perf.getAudience() + " seats\n";
+            totalAmount += perf.countAmount(perf,play);
+        }
+        result += "Amount owed is " + totalAmount / 100 + "\n";
+        result += "You earned " + volumeCredits +  " " + "credits\n";
+        return result;
+    }
 ```
