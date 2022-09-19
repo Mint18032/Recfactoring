@@ -2,9 +2,6 @@
 Tran Ngoc Truc Linh 20020113
 Quach Ngoc Minh 20020261
  */
-import com.google.gson.Gson;
-
-import java.util.*;
 
 public class Play {
     /*plays.json...
@@ -42,6 +39,10 @@ public class Play {
         return type;
     }
 
+    public boolean isValidType() {
+        return (this.type.equals("tragedy") || this.type.equals("comedy"));
+    }
+
     public int getBaseAmount() {
         if (this.type == "tragedy") {
             return BASE_AMOUNT_TRAGEDY;
@@ -55,12 +56,14 @@ public class Play {
         }
         return BASE_AUDIENCE_COMEDY;
     }
+
     public int getBaseBonus() {
         if (this.type == "tragedy") {
             return BASE_BONUS_TRAGEDY;
         }
         return BASE_BONUS_COMEDY;
     }
+
     public int getBonusAmount() {
         if (this.type == "tragedy") {
             return BONUS_AMOUNT_TRAGEDY;
