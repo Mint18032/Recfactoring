@@ -24,7 +24,7 @@ public class Invoice {
         this.performances = performances;
     }
 
-    public static String getCustomerInfo(Invoice invoice, HashMap<String, Play> plays) throws Exception {
+    public static String getBillDetails(Invoice invoice, HashMap<String, Play> plays) throws Exception {
         int totalAmount = 0;
         int volumeCredits = 0;
         String result = "Statement for " + invoice.customer + "\n";

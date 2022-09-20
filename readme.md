@@ -1,7 +1,7 @@
 # Báo cáo tái cấu trúc mã nguồn
 
 ---
-### Thông tin nhóm:
+## Thông tin nhóm:
 1. Trần Ngọc Trúc Linh 20020113
 2. Quách Ngọc Minh 20020261
 ---
@@ -483,11 +483,11 @@ public class Play {
 ## Rename Method
 Tên phương thức `statement()` trong `Invoice class` chưa được rõ ràng, 
 chưa thể hiện được công dụng của phương thức. 
-Cần đổi tên phương thức này thành `getCustomerInfo()`.
+Cần đổi tên phương thức này thành `getBillDetails()`.
 
 Giờ đây, người đọc sẽ dễ hiểu phương thức này hơn:
 ```java
-    public static String getCustomerInfo(Invoice invoice, HashMap<String, Play> plays) throws Exception {
+    public static String getBillDetails(Invoice invoice, HashMap<String, Play> plays) throws Exception {
         int totalAmount = 0;
         int volumeCredits = 0;
         String result = "Statement for " + invoice.customer + "\n";

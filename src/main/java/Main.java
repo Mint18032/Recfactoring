@@ -27,7 +27,7 @@ public class Main {
         System.out.println(json2);
 
         try {
-            String result = Invoice.getCustomerInfo(invoice, plays);
+            String result = Invoice.getBillDetails(invoice, plays);
             System.out.println("Result:\n" + result);
         } catch (Exception e) {
             System.out.println(e);
